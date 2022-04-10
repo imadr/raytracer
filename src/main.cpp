@@ -8,10 +8,7 @@
 #include <vector>
 #include <memory>
 
-using std::vector;
-using std::shared_ptr;
 using std::make_shared;
-using std::static_pointer_cast;
 
 Raytracer raytracer;
 
@@ -25,14 +22,14 @@ void keyboard_callback(u32 keycode, KeyState key_state){
 }
 
 i32 main(){
-    u32 width = 800;
-    u32 height = 600;
+    u32 width = 700;
+    u32 height = 500;
     Frame frame = Frame(width, height);
 
     raytracer = Raytracer(&frame);
 
     raytracer.hittables.push_back(make_shared<Sphere>(Sphere(Vec3(0, 0, -1), 0.5)));
-    raytracer.hittables.push_back(make_shared<Sphere>(Sphere(Vec3(0, -100.5, -30), 100)));
+    raytracer.hittables.push_back(make_shared<Sphere>(Sphere(Vec3(0, -100.5, -1), 100)));
 
     u8 err = window_create("raytracer", width, height, &frame);
     if(err){

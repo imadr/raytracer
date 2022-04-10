@@ -47,3 +47,11 @@ Vec3 Vec3::normalize(){
 f32 rand_f32(){
     return rand()/(RAND_MAX+1.0);
 }
+
+Vec3 rand_point_unit_sphere(){
+    while(true){
+        Vec3 point = Vec3(rand_f32(), rand_f32(), rand_f32());
+        if(point.length() >= 1) continue;
+        return point;
+    }
+}

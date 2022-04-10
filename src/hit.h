@@ -22,7 +22,7 @@ struct Hit{
 };
 
 struct Hittable{
-    virtual bool hit(Ray ray, Hit* hit) = 0;
+    virtual bool hit(Ray ray, f32 t_min, f32 t_max, Hit* hit) = 0;
 };
 
 struct Sphere: Hittable{
@@ -31,5 +31,5 @@ struct Sphere: Hittable{
 
     Sphere(Vec3 center, f32 radius): center(center), radius(radius){}
 
-    virtual bool hit(Ray ray, Hit* hit);
+    virtual bool hit(Ray ray,  f32 t_min, f32 t_max, Hit* hit);
 };

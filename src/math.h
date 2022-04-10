@@ -55,3 +55,4 @@ Vec3 operator-(Vec3 a, Vec3 b);
 Vec3 operator+(Vec3 a, Vec3 b);
 f32 rad(f32 deg);
 f32 rand_f32();
+Vec3 rand_point_unit_sphere();

@@ -7,15 +7,31 @@
 #include "types.h"
 #include "window.h"
 
-Vec3 Raytracer::ray_color(Ray r){
+Vec3 Raytracer::ray_color(Ray r, u32 depth){
     Hit hit;
 
+    if(depth >= max_depth){
+        return Vec3(0, 0, 0);
+    }
+
+    f32 t_max = 1000;
+    f32 t_min = 0.01;
+
+    f32 closest_so_far = t_max;
+    bool hit_anything = false;
     for(auto hittable: hittables){
-        if((*hittable).hit(r, &hit)){
-            return 0.5*(hit.normal+Vec3(1, 1, 1));
-            // return Vec3(hit.ray_t, 0, 0);
+        if((*hittable).hit(r, t_min, closest_so_far, &hit)){
+            hit_anything = true;
+            closest_so_far = hit.ray_t;
         }
     }
+    if(hit_anything){
+        Vec3 target = hit.point+hit.normal+rand_point_unit_sphere();
+        return 0.5*ray_color(Ray(hit.point, target-hit.point), depth+1);
+        // return (hit.normal+Vec3(1, 1, 1))/2;
+        // return Vec3(hit.depth, hit.depth, hit.depth);
+    }
+
     Vec3 ray_dir = r.direction.normalize();
     f32 t = (ray_dir.y+1)*0.5;
     return vec3_lerp(Vec3(1.0, 1.0, 1.0), Vec3(0.5, 0.7, 1.0), t);
@@ -44,7 +60,7 @@ void Raytracer::trace(){
                 f32 u = (f32)(i+rand_f32())/frame->width;
                 f32 v = 1-(f32)(j+rand_f32())/frame->height;
                 Ray r = Ray(camera_pos, lower_left_corner+horizontal*u+vertical*v-camera_pos);
-                color += ray_color(r);
+                color += ray_color(r, 0);
             }
             draw_pixel(frame, i, j, color, samples_per_pixel);
             count++;

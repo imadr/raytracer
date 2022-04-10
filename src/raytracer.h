@@ -16,11 +16,13 @@ struct Raytracer{
     Frame* frame;
     vector<shared_ptr<Hittable>> hittables;
     Vec3 camera_pos = Vec3(0, 0, 0);
-    u32 samples_per_pixel = 1;
+
+    u32 max_depth = 50;
+    u32 samples_per_pixel = 10;
 
     Raytracer(){}
     Raytracer(Frame* frame): frame(frame){}
 
-    Vec3 ray_color(Ray r);
+    Vec3 ray_color(Ray r, u32 depth);
     void trace();
 };
